@@ -1,14 +1,14 @@
 <?php
-$servername = "127.0.0.1";
-$username = 'root';
-$password = ""; // Use an empty string for no password
-$dbname = "login_db"; // Replace with your actual database name
+$host = 'localhost';  // Your local host
+$dbname = 'login_db'; // Your database name
+$username = 'root';   // Your database username
+$password = '';       // Leave password empty for no password
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+try {
+    $db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    echo "Database connection failed: " . $e->getMessage();
+    exit;
 }
 ?>
