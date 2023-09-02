@@ -1,35 +1,33 @@
 <?php
 require_once 'models/UserModel.php';
-require_once 'models/TokenModel.php';
-
 class AuthController {
+    private $db; // Add a private property to store the database connection
+
+    public function __construct(PDO $db) {
+        $this->db = $db; // Store the database connection in the property
+    }
     public function handleLogin() {
-        // Handle login form submission
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            $userModel = new UserModel();
-            $user = $userModel->getUserByUsername($username);
+            $userModel = new UserModel($this->db);
 
-            if ($user && password_verify($password, $user['password'])) {
-                $tokenModel = new TokenModel();
-                $token = $tokenModel->generateToken($username);
-                $tokenModel->saveToken($username, $token);
+            if ($userModel->validateUser($username, $password)) {
 
-                // Send email
-                $message = "Please use this link to login: http://<ipaddress>/.../validation.php?username=$username&token=$token";
-                mail($user['email'], 'Login Link', $message);
-
-                header('Location: validation.php');
-                exit();
+                // User credentials are valid
+                $token = $userModel->generateToken($username);
+                $userModel->sendValidationEmail($username, $token);
+                include 'views/validation.php';
             } else {
                 // Invalid credentials
-                // Display an error message
+                $errorMessage = 'Invalid username or password';
+                include 'views/login.php';
             }
+        } else {
+            // Display login form
+            include 'views/login.php';
         }
-
-        require 'views/login.php';
     }
 }
 ?>
