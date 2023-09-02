@@ -1,25 +1,21 @@
 <?php
-require_once 'models/UserModel.php';
-require_once 'models/TokenModel.php';
+require_once '../models/UserModel.php';
+require_once '../models/TokenModel.php';
+require_once '../models/DisplayModel.php';
+
 
 class DisplayController {
-    private $db;
+    private $model;
 
     public function __construct($db) {
-        $this->db = $db;
+        $this->model = new DisplayModel($db);
     }
-    public function displayUserDetails($username, $token) {
-        // Validate the token and retrieve user details from the database
-        if ($this->isValidToken($username, $token)) {
-            // Token is valid, retrieve user details (replace with your database code)
-            $userDetails = $this->getUserDetailsByUsername($username);
 
-            // Load the display view and pass user details to it
-            include 'views/display.php';
-        } else {
-            // Token is not valid or expired, show an error message (replace with appropriate error handling)
-            echo "Token expired or invalid.";
-        }
+    public function displayUserDetails($username, $token) {
+        // Call the model to get user details
+        $userDetails = $this->model->getUserDetailsByUsernameAndToken($username, $token);
+
+        return $userDetails;
     }
 
     // Placeholder function for token validation (implement your own logic)

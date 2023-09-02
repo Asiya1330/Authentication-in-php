@@ -5,13 +5,17 @@
 </head>
 <body>
     <?php
-    require_once 'controllers/DisplayController.php';
+    // Include the DisplayController class
+    require_once '../controllers/DisplayController.php';
+    require_once '../db.php'; // Adjust the path as needed
 
     // Get username and token from query parameters
     $username = $_GET['username'];
     $token = $_GET['token'];
 
-    // Create an instance of the DisplayController
+    // Include the existing database connection
+
+    // Create an instance of the DisplayController and pass the database connection
     $displayController = new DisplayController($db);
 
     // Call the displayUserDetails method to show user details
@@ -20,12 +24,11 @@
     if ($userDetails) {
         // Display user details if valid
         echo "<h1>User Details</h1>";
-        echo "<p>Name: " . $userDetails['Name'] . "</p>";
-        echo "<p>Address: " . $userDetails['Address'] . "</p>";
-        echo "<p>Balance: " . $userDetails['Balance'] . "</p>";
-        echo "<p>Email: " . $userDetails['Email'] . "</p>";
+        echo "<p>Name: " . $userDetails['username'] . "</p>";
+        echo "<p>Token: " . $userDetails['token'] . "</p>";
+        // echo "<p>Balance: " . $userDetails['Balance'] . "</p>";
+        // echo "<p>Email: " . $userDetails['Email'] . "</p>";
     } else {
-        // Display an error message if the token is invalid
         echo "Token expired or invalid.";
     }
     ?>
