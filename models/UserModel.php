@@ -49,34 +49,36 @@ class UserModel {
         return $token;
     }
 
-    public function sendValidationEmail($username, $token) {
+
+    function sendValidationEmail($username, $token) {
         // Recipient email address (replace with the user's email)
-        $recipientEmail = 'farhan@foomotion.io';
-    
+        $recipientEmail = 'gfarhan18@gmail.com';
+        
         // Subject of the email
         $subject = 'Validation Email';
-    
+        
         // Construct the validation link
-        $validationLink = "http://two-fa-authentication.local/display.php?username=$username&token=$token";
-    
+        $validationLink = "http://two-fa-authentication.local/views/display.php?username=$username&token=$token";
+        
         // Email message
         $message = "Dear $username,\n\nPlease use this link to validate your account:\n$validationLink\n\nAdmin Team";
-    
+        
         // Additional headers
-        $headers = 'From: your_email@example.com' . "\r\n" .
-                   'Reply-To: your_email@example.com' . "\r\n" .
-                   'X-Mailer: PHP/' . phpversion();
-    
-        // Send the email
-        $mailSent = mail($recipientEmail, $subject, $message, $headers);
-
-        if ($mailSent) {
+        $headers = "From: gfarhan18@gmail.com\r\n";
+        $headers .= "Reply-To: gfarhan18@gmail.com\r\n";
+        $headers .= "X-Mailer: PHP/" . phpversion();
+        
+        // Send the email using the PHP mail() function
+        if (mail($recipientEmail, $subject, $message, $headers)) {
+            $message = "Dear $username,\n\nPlease use this link to validate your account:\n$validationLink\n\nAdmin Team";
+            echo $message;
             echo "An email has been sent. Please check your inbox (and spam).";
         } else {
             echo "Email sending failed. Error: " . error_get_last()['message'];
         }
-
     }
+
+
     
 }
 ?>

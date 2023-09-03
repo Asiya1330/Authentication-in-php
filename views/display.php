@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>User Display</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
     <?php
@@ -20,17 +21,20 @@
 
     // Call the displayUserDetails method to show user details
     $userDetails = $displayController->displayUserDetails($username, $token);
-
-    if ($userDetails) {
-        // Display user details if valid
-        echo "<h1>User Details</h1>";
-        echo "<p>Name: " . $userDetails['username'] . "</p>";
-        echo "<p>Token: " . $userDetails['token'] . "</p>";
-        // echo "<p>Balance: " . $userDetails['Balance'] . "</p>";
-        // echo "<p>Email: " . $userDetails['Email'] . "</p>";
-    } else {
-        echo "Token expired or invalid.";
-    }
     ?>
+    <div class="user-details">
+        <h1>User Details</h1>
+        <?php
+        if ($userDetails) {
+            echo "<table>";
+            echo "<tr><td>Name:</td><td>" . $userDetails['username'] . "</td></tr>";
+            echo "<tr><td>Token:</td><td>" . $userDetails['token'] . "</td></tr>";
+            // Add more details as needed
+            echo "</table>";
+        } else {
+            echo "<p class='error-message'>Token expired or invalid.</p>";
+        }
+        ?>
+    </div>
 </body>
 </html>
