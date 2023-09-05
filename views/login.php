@@ -12,7 +12,6 @@
             <button type="submit">Login</button>
         </form>
         <?php
-        // Check if an error message is set and display it
         if (isset($errorMessage)) {
             echo '<div class="error-message">' . $errorMessage . '</div>';
         }
