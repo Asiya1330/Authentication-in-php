@@ -1,10 +1,10 @@
 <?php
 require_once 'models/UserModel.php';
 class AuthController {
-    private $db; // Add a private property to store the database connection
+    private $db; 
 
     public function __construct(PDO $db) {
-        $this->db = $db; // Store the database connection in the property
+        $this->db = $db; 
     }
     public function handleLogin() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -15,17 +15,17 @@ class AuthController {
 
             if ($userModel->validateUser($username, $password)) {
 
-                // User credentials are valid
+
                 $token = $userModel->generateToken($username);
                 $userModel->sendValidationEmail($username, $token);
-                include 'views/validation.php';
+                header('Location: views/validation.php');
+                exit;
             } else {
-                // Invalid credentials
                 $errorMessage = 'Invalid username or password';
-                include 'views/login.php';
+                header('Location: views/login.php?error=' . urlencode($errorMessage));
+                exit;
             }
         } else {
-            // Display login form
             include 'views/login.php';
         }
     }
